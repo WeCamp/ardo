@@ -6,7 +6,8 @@
   },
   "autoload": {
     "psr-4": {
-      "WeCamp\\Ardo\\": "src/Ardo"
+      "WeCamp\\Ardo\\": "src/Ardo",
+      "WeCamp\\Ardo\\Slack\\": "src/Slack"
     }
   },
   "require": {
