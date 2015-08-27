@@ -6,15 +6,21 @@
   },
   "autoload": {
     "psr-4": {
-      "WeCamp\\Ardo\\": "src/Ardo"
+      "WeCamp\\Ardo\\": "src/Ardo",
+      "WeCamp\\Ardo\\Arduino\\": "src/Arduino/Plugin"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WeCamp\\Ardo\\Arduino\\Tests\\": "src/Arduino/Tests"
     }
   },
   "require": {
     "beberlei/assert": "^2.4",
     "frlnc/php-slack": "^1.0",
     "whatthejeff/nyancat-phpunit-resultprinter": "^1.2"
-},
+  },
   "scripts" :{
-    "test": "phpunit"
+    "test": "phpunit -c phpunit.xml.dist"
   }
 }
