@@ -1,8 +1,8 @@
 <?php
 
-namespace Ardo\Messages;
+namespace WeCamp\Ardo\Messages;
 
-use Ardo\Plugin\MessageInterface;
+use WeCamp\Ardo\Plugin\MessageInterface;
 use Assert\Assertion;
 
 class Message implements MessageInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ardo\Plugin;
+namespace WeCamp\Ardo\Plugin;
 
 interface OutputInterface
 {

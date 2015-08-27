@@ -1,9 +1,9 @@
 <?php
-namespace Ardo;
+namespace WeCamp\Ardo;
 
-use Ardo\Plugin\InputInterface;
-use Ardo\Plugin\MessageInterface;
-use Ardo\Plugin\OutputInterface;
+use WeCamp\Ardo\Plugin\InputInterface;
+use WeCamp\Ardo\Plugin\MessageInterface;
+use WeCamp\Ardo\Plugin\OutputInterface;
 
 class Bot
 {

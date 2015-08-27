@@ -5,11 +5,14 @@
     "phpunit/phpunit": "4.8.6"
   },
   "autoload": {
-    "psr-0": {
-      "": "src/"
+    "psr-4": {
+      "WeCamp\\Ardo\\": "src/Ardo"
     }
   },
   "require": {
     "beberlei/assert": "^2.4"
+},
+  "scripts" :{
+    "test": "phpunit"
   }
 }

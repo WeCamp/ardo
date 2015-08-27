@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: jerryverhoef
- * Date: 26/08/15
- * Time: 14:48
- */
 
-namespace Ardo\Plugin;
+namespace WeCamp\Ardo\Plugin;
 
 
 interface MessageInterface

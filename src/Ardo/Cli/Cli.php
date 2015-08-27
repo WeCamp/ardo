@@ -1,10 +1,10 @@
 <?php
 
-namespace Ardo\Cli;
+namespace WeCamp\Ardo\Cli;
 
-use Ardo\Plugin\InputInterface;
-use Ardo\Plugin\MessageInterface;
-use Ardo\Plugin\OutputInterface;
+use WeCamp\Ardo\Plugin\InputInterface;
+use WeCamp\Ardo\Plugin\MessageInterface;
+use WeCamp\Ardo\Plugin\OutputInterface;
 
 class Cli implements InputInterface, OutputInterface
 {
