@@ -8,6 +8,14 @@ use Assert\Assertion;
 class Message implements MessageInterface
 {
     /**
+     * @return Message
+     */
+    public static function createFromNothing()
+    {
+        return new static('');
+    }
+
+    /**
      * @param $message
      * @return Message
      */

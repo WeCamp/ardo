@@ -7,7 +7,8 @@
   "autoload": {
     "psr-4": {
       "WeCamp\\Ardo\\": "src/Ardo",
-      "WeCamp\\Ardo\\Arduino\\": "src/Arduino/Plugin"
+      "WeCamp\\Ardo\\Arduino\\": "src/Arduino/Plugin",
+      "WeCamp\\Ardo\\Slack\\": "src/Slack"
     }
   },
   "autoload-dev": {

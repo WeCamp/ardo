@@ -30,6 +30,6 @@ class Cli implements InputInterface, OutputInterface
 
     public function handleMessage(MessageInterface $message)
     {
-        printf('I am handling this: %s', $message->toString());
+        printf("I am handling this: %s\n", $message->toString());
     }
 }
