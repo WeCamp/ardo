@@ -1,3 +1,5 @@
 # Ardo
 
-Ardo is your friendly or not bot. It is completely pluggable. 
+![Avatar for Ardo](ardo-head.png "Avatar for Ardo")
+
+Ardo is your friendly or not bot. It is completely pluggable.
