@@ -1,7 +1,7 @@
 <?php
 namespace WeCamp\Ardo\Slack\ValueObject;
 
-use WeCamp\Ardo\Slack\Messages\Message\SlackMessage;
+use Assert\Assertion;
 
 class SlackTimestamp
 {
@@ -36,6 +36,17 @@ class SlackTimestamp
     public static function createFromSlackString($ts)
     {
         return new static($ts);
+    }
+
+    public static function createNow()
+    {
+        return new static(sprintf("%d.000000", time()));
+    }
+
+    public function getTime()
+    {
+        list($timestamp, ) = explode('.', $this->getValue());
+        return $timestamp;
     }
 
     /**

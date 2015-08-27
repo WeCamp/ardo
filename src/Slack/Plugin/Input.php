@@ -5,6 +5,7 @@ namespace WeCamp\Ardo\Slack\Plugin;
 use WeCamp\Ardo\Plugin\InputInterface;
 use WeCamp\Ardo\Plugin\MessageInterface;
 use WeCamp\Ardo\Slack\Messages\InputMessage;
+use WeCamp\Ardo\Slack\Service\SinceInterface;
 use WeCamp\Ardo\Slack\Service\SlackInterface;
 use WeCamp\Ardo\Slack\ValueObject\SlackTimestamp;
 
@@ -19,15 +20,15 @@ class Input implements InputInterface
     private $slack;
 
     /**
-     * @var SlackTimestamp
+     * @var SinceInterface
      */
     private $since;
 
     /**
      * @param SlackInterface $slack
-     * @param SlackTimestamp $since
+     * @param SinceInterface $since
      */
-    public function __construct(SlackInterface $slack, SlackTimestamp $since)
+    public function __construct(SlackInterface $slack, SinceInterface $since)
     {
         $this->slack = $slack;
         $this->since = $since;
@@ -38,7 +39,7 @@ class Input implements InputInterface
      */
     public function poll()
     {
-        $messages = $this->slack->getMessages($this->since);
+        $messages = $this->slack->getMessages($this->since->getLastTime());
         $returnValue = InputMessage::createFromNothing();
         foreach ($messages as $message) {
             if (
@@ -51,8 +52,11 @@ class Input implements InputInterface
                         \strlen(self::KEYWORD)
                     )
                 );
-                $this->since = $message->getTimestamp();
+                $this->since->update($message->getTimestamp());
             }
+        }
+        if ($returnValue->isEmpty()) {
+            $this->since->update(SlackTimestamp::createNow());
         }
         return $returnValue;
     }

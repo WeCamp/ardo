@@ -37,7 +37,7 @@ class Slack implements SlackInterface
         $this->commander->execute('chat.postMessage', [
             'channel' => $this->channel,
             'text'    => $message->toString(),
-            'username'=> 'ardo'
+            'username'=> 'ardo',
         ]);
     }
 
