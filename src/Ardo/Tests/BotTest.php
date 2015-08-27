@@ -21,9 +21,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $bot->tick();
     }
 
-    /**
-     *
-     */
     function testBotIsSendingARecievedMessageToOutput()
     {
         $message = $this->prophesize(MessageInterface::class);
