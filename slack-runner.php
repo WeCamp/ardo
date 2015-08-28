@@ -4,39 +4,47 @@ require 'vendor/autoload.php';
 use Frlnc\Slack\Http\SlackResponseFactory;
 use Frlnc\Slack\Http\CurlInteractor;
 use Frlnc\Slack\Core\Commander;
+
+use GuzzleHttp\Client;
+
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+
+use WeCamp\Ardo\Arduino\InputPlugin;
+use WeCamp\Ardo\Bot;
+use WeCamp\Ardo\Cli\Cli;
+use WeCamp\Ardo\Messages\Message;
+use WeCamp\Ardo\Slack\Plugin\Input;
+use WeCamp\Ardo\Slack\Plugin\Output;
+use WeCamp\Ardo\Slack\Service\Since;
+use WeCamp\Ardo\Slack\Service\Slack;
 
 /* Slack Plugin */
 $interactor = new CurlInteractor;
 $interactor->setResponseFactory(new SlackResponseFactory);
 
-$slackService = new WeCamp\Ardo\Slack\Service\Slack(
+$slackService = new Slack(
     new Commander(\getenv('SLACK_TOKEN'), $interactor),
     'C09JL3GR0'
 );
-$sinceService = new \WeCamp\Ardo\Slack\Service\Since('/tmp/since.db');
-$slackInput = new WeCamp\Ardo\Slack\Plugin\Input(
-    $slackService,
-    $sinceService
-);
-$slackOutput = new WeCamp\Ardo\Slack\Plugin\Output($slackService);
+$sinceService = new Since('/tmp/since.db');
+$slackInput = new Input($slackService, $sinceService);
+$slackOutput = new Output($slackService);
 
 /* Commandline Plugin */
-$cli = new WeCamp\Ardo\Cli\Cli(WeCamp\Ardo\Messages\Message::createFromString("hello i am a bot"));
+$cli = new Cli(Message::createFromString('Hello World, I am a bot!'));
 
 /* Arduino Plugin */
-$httpClient = new \GuzzleHttp\Client(['base_uri' => '10.0.0.3',]);
-$arduinoPlugin = new \WeCamp\Ardo\Arduino\InputPlugin($httpClient);
+$httpClient = new Client(['base_uri' => '10.0.0.3',]);
+$arduinoPlugin = new InputPlugin($httpClient);
 
 /* Logging */
 $logger = new Logger('Ardo');
 $logger->pushHandler(new StreamHandler('ardoBot.log', Logger::INFO));
 
 /* Feed the Plugins and Logger to Ardo */
-$bot = new WeCamp\Ardo\Bot($logger);
+$bot = new Bot($logger);
 $bot->registerInput($slackInput);
-//$bot->registerInput($cli);
 $bot->registerOutput($cli);
 $bot->registerOutput($slackOutput);
 $bot->registerOutput($arduinoPlugin);
