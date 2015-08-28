@@ -1,8 +1,8 @@
 <?php
 namespace WeCamp\Ardo;
 
-use Monolog\Logger;
 use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use WeCamp\Ardo\Plugin\InputInterface;
 use WeCamp\Ardo\Plugin\MessageInterface;
 use WeCamp\Ardo\Plugin\OutputInterface;
@@ -21,9 +21,9 @@ class Bot
     private $output;
 
     /**
-     *
+     * @param LoggerInterface $logger
      */
-    public function __construct(Logger $logger)
+    public function __construct(LoggerInterface $logger)
     {
         $this->input = [];
         $this->output = [];
