@@ -24,7 +24,7 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
     final public function handleMessage(MessageInterface $message)
     {
         if ($this->shouldCallArduino($message)) {
-            $this->logger->info($message, ['class' => self::class]);
+            $this->logger->info($message->toString(), ['class' => self::class]);
             $this->callArduino($this->client, $message->toString());
         }
     }
