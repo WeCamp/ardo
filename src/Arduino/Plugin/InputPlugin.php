@@ -42,9 +42,11 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
 
     private function callArduino(Client $client, $message)
     {
-        list($url, $parameter) = explode(' ', $message, 2);
-        $response = $client->request('get', $url, ['params' => $parameter]);
+        list($url, $parameter) = explode(' ', trim($message), 2);
+        $response = $client->get('/' . $url, ['query' => 'params=' . $parameter]);
+
         $this->logger->info($url, ['class' => self::class, 'response' => $response]);
+
         return $response;
     }
 

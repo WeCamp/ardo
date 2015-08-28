@@ -35,7 +35,7 @@ $slackOutput = new Output($slackService);
 $cli = new Cli(Message::createFromString('Hello World, I am a bot!'));
 
 /* Arduino Plugin */
-$httpClient = new Client(['base_uri' => '10.0.0.3',]);
+$httpClient = new Client(['base_uri' => 'http://10.0.0.3']);
 $arduinoPlugin = new InputPlugin($httpClient);
 
 /* Logging */
