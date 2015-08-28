@@ -14,7 +14,10 @@
 >
     <testsuites>
         <testsuite name="Ardo Main Suite">
-            <directory suffix="Test.php">src/Ardo/Tests</directory>
+            <directory suffix="Test.php">src/Ardo/Tests/</directory>
+        </testsuite>
+        <testsuite name="Ardo Slack Plugin Suite">
+            <directory suffix="Test.php">src/Slack/Tests</directory>
         </testsuite>
         <testsuite name="Ardo Arduino Plugin Suite">
             <directory suffix="Test.php">src/Arduino/Tests</directory>
