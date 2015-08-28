@@ -54,7 +54,7 @@ class Slack implements SlackInterface
         $responses = [];
         $responseBody = $response->getBody();
         if (isset($responseBody['messages'])) {
-            foreach (['messages'] as $message) {
+            foreach ($responseBody['messages'] as $message) {
                 \array_push($responses,
                     new SlackMessage(
                         $message['text'],
