@@ -2,7 +2,7 @@
 
 namespace WeCamp\Ardo\Plugin;
 
-interface InputInterface
+interface InputInterface extends PluginInterface
 {
     /**
      * @return MessageInterface
