@@ -2,6 +2,8 @@
 
 namespace WeCamp\Ardo\Slack\Plugin;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use WeCamp\Ardo\Plugin\InputInterface;
 use WeCamp\Ardo\Plugin\MessageInterface;
 use WeCamp\Ardo\Slack\Messages\InputMessage;
@@ -9,7 +11,7 @@ use WeCamp\Ardo\Slack\Service\SinceInterface;
 use WeCamp\Ardo\Slack\Service\SlackInterface;
 use WeCamp\Ardo\Slack\ValueObject\SlackTimestamp;
 
-class Input implements InputInterface
+class Input implements InputInterface, LoggerAwareInterface
 {
 
     const KEYWORD = 'ardo';
@@ -23,6 +25,11 @@ class Input implements InputInterface
      * @var SinceInterface
      */
     private $since;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @param SlackInterface $slack
@@ -46,6 +53,7 @@ class Input implements InputInterface
                 $returnValue->isEmpty() === true &&
                 \strtolower(\substr($message->toString(), 0, \strlen(self::KEYWORD))) == self::KEYWORD
             ) {
+                $this->logger->info(self::class . ": " . $message->toString());
                 $returnValue = InputMessage::createFromString(
                     \substr(
                         $message->toString(),
@@ -56,8 +64,22 @@ class Input implements InputInterface
             }
         }
         if ($returnValue->isEmpty()) {
+            $this->logger->info(self::class . ': No Message');
             $this->since->update(SlackTimestamp::createNow());
         }
         return $returnValue;
     }
+
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+
 }

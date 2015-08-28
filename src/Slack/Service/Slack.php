@@ -52,13 +52,16 @@ class Slack implements SlackInterface
             'oldest'    => $slackTimestamp->getValue()
         ]);
         $responses = [];
-        foreach($response->getBody()['messages'] as $message) {
-            \array_push($responses,
-                new SlackMessage(
-                    $message['text'],
-                    SlackTimestamp::createFromSlackString($message['ts'])
-                )
-            );
+        $responseBody = $response->getBody();
+        if (isset($responseBody['messages'])) {
+            foreach (['messages'] as $message) {
+                \array_push($responses,
+                    new SlackMessage(
+                        $message['text'],
+                        SlackTimestamp::createFromSlackString($message['ts'])
+                    )
+                );
+            }
         }
         return $responses;
     }

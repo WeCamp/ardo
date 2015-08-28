@@ -19,8 +19,9 @@
   "require": {
     "beberlei/assert": "^2.4",
     "frlnc/php-slack": "^1.0",
-    "whatthejeff/nyancat-phpunit-resultprinter": "^1.2",
-    "guzzlehttp/guzzle": "^6.0"
+    "guzzlehttp/guzzle": "^6.0",
+    "monolog/monolog": "^1.16",
+    "whatthejeff/nyancat-phpunit-resultprinter": "^1.2"
   },
   "scripts" :{
     "test": "phpunit -c phpunit.xml.dist"
