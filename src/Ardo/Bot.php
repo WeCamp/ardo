@@ -63,10 +63,16 @@ class Bot
      * @param MessageInterface $message
      * @return array
      */
-    private function sendMessageToOutput(MessageInterface $message)
+    private function sendMessageToOutput(MessageInterface $message = null)
     {
-        foreach($this->output as $output) {
-            $output->handleMessage($message);
+        if ($message instanceof MessageInterface) {
+            foreach($this->output as $output) {
+                $outgoingMessage = $output->handleMessage($message);
+                if ($outgoingMessage instanceof MessageInterface && $outgoingMessage->isEmpty() === false) {
+                    $this->sendMessageToOutput($outgoingMessage);
+                }
+            }
+
         }
     }
 

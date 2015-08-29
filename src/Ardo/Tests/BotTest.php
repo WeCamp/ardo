@@ -11,6 +11,10 @@ use WeCamp\Ardo\Plugin\OutputInterface;
 
 /**
  * Test all the Bot!
+ *
+ * @coversDefaultClass \Wecamp\Ardo\Bot
+ * @covers ::__construct
+ * @covers ::<!public>
  */
 class BotTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,6 +32,10 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->bot = new Bot($this->mockLogger);
     }
 
+    /**
+     * @covers ::registerInput
+     * @covers ::tick
+     */
     function testTicksChecksAllInputs()
     {
         $bot = $this->bot;
@@ -41,11 +49,17 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $bot->tick();
     }
 
+    /**
+     * @covers ::registerOutput
+     * @covers ::registerInput
+     * @covers ::tick
+     */
     function testBotIsSendingARecievedMessageToOutput()
     {
         $bot = $this->bot;
 
         $message = $this->prophesize(MessageInterface::class);
+        $message->isEmpty()->willReturn(false);
 
         $inputInterface = $this->prophesize(InputInterface::class);
         $inputInterface->poll()->willReturn($message->reveal())->shouldBeCalled();
