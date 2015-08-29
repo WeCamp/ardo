@@ -20,22 +20,22 @@ use WeCamp\Ardo\Slack\Service\Since;
 use WeCamp\Ardo\Slack\Service\Slack;
 
 /* Slack Plugin */
-$interactor = new CurlInteractor;
+$interactor = new CurlInteractor();
 $interactor->setResponseFactory(new SlackResponseFactory);
 
-$slackService = new Slack(
-    new Commander(\getenv('SLACK_TOKEN'), $interactor),
-    'C09JL3GR0'
-);
+$slackService = new Slack(new Commander(\getenv('SLACK_TOKEN'), $interactor), 'C09JL3GR0');
 $sinceService = new Since('/tmp/since.db');
-$slackInput = new Input($slackService, $sinceService);
-$slackOutput = new Output($slackService);
+
+var_dump($sinceService->getLastTime()->getTime());
+
+$slackInput   = new Input($slackService, $sinceService);
+$slackOutput  = new Output($slackService);
 
 /* Commandline Plugin */
 $cli = new Cli(Message::createFromString('Hello World, I am a bot!'));
 
 /* Arduino Plugin */
-$httpClient = new Client(['base_uri' => 'http://10.0.0.3']);
+$httpClient    = new Client(['base_uri' => 'http://10.0.0.3']);
 $arduinoPlugin = new InputPlugin($httpClient);
 
 /* Logging */

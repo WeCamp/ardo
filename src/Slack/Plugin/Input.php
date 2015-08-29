@@ -46,27 +46,28 @@ class Input implements InputInterface, LoggerAwareInterface
      */
     public function poll()
     {
-        $messages = $this->slack->getMessages($this->since->getLastTime());
+        $messages    = $this->slack->getMessages($this->since->getLastTime());
         $returnValue = InputMessage::createFromNothing();
+
         foreach ($messages as $message) {
             if (
                 $returnValue->isEmpty() === true &&
                 \strtolower(\substr($message->toString(), 0, \strlen(self::KEYWORD))) == self::KEYWORD
             ) {
                 $this->logger->info(self::class . ": " . $message->toString());
-                $returnValue = InputMessage::createFromString(
-                    \substr(
-                        $message->toString(),
-                        \strlen(self::KEYWORD)
-                    )
-                );
+
+                $returnValue = InputMessage::createFromString(\substr($message->toString(), \strlen(self::KEYWORD)));
+
                 $this->since->update($message->getTimestamp());
             }
         }
+
         if ($returnValue->isEmpty()) {
-            $this->logger->info(self::class . ': No Message');
+            $this->logger->info(self::class . ': No Message', ['messages' => $messages]);
+
             $this->since->update(SlackTimestamp::createNow());
         }
+
         return $returnValue;
     }
 
@@ -80,6 +81,4 @@ class Input implements InputInterface, LoggerAwareInterface
     {
         $this->logger = $logger;
     }
-
-
 }

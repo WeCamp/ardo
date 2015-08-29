@@ -21,12 +21,12 @@ class Slack implements SlackInterface
 
     /**
      * @param Commander $commander
-     * @param $channel
+     * @param string    $channel
      */
     public function __construct(Commander $commander, $channel)
     {
         $this->commander = $commander;
-        $this->channel = $channel;
+        $this->channel   = $channel;
     }
 
     /**
@@ -34,11 +34,14 @@ class Slack implements SlackInterface
      */
     public function sendMessage(MessageInterface $message)
     {
-        $this->commander->execute('chat.postMessage', [
-            'channel' => $this->channel,
-            'text'    => $message->toString(),
-            'username'=> 'ardo',
-        ]);
+        $this->commander->execute(
+            'chat.postMessage',
+            [
+                'channel'  => $this->channel,
+                'text'     => $message->toString(),
+                'username' => 'ardo',
+            ]
+        );
     }
 
     /**
@@ -47,15 +50,20 @@ class Slack implements SlackInterface
      */
     public function getMessages(SlackTimestamp $slackTimestamp)
     {
-        $response = $this->commander->execute('channels.history', [
-            'channel' => $this->channel,
-            'oldest'    => $slackTimestamp->getValue()
-        ]);
-        $responses = [];
+        $response     = $this->commander->execute(
+            'channels.history',
+            [
+                'channel' => $this->channel,
+                'oldest'  => $slackTimestamp->getValue()
+            ]
+        );
         $responseBody = $response->getBody();
+
+        $responses = [];
         if (isset($responseBody['messages'])) {
             foreach ($responseBody['messages'] as $message) {
-                \array_push($responses,
+                \array_push(
+                    $responses,
                     new SlackMessage(
                         $message['text'],
                         SlackTimestamp::createFromSlackString($message['ts'])
