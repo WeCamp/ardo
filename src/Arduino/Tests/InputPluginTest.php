@@ -141,6 +141,14 @@ class InputPluginTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['play AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+            ['play: AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+            ['sing AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+            ['song AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+            ['sing a song: AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+            ['play a song: AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+            ['temperature', 'temp', ''],
+            ['temp', 'temp', ''],
+            ['light', 'light', ''],
         ];
     }
 

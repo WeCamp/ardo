@@ -44,12 +44,19 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
         $this->logger = $logger;
     }
 
-    private function callArduino(Client $client, $message)
+    private function callArduino(Client $client, $request)
     {
-        list($url, $parameter) = explode(' ', trim($message), 2);
-        $response = $client->get('/' . $url, ['query' => 'params=' . $parameter]);
+        $response = null;
 
-        $this->log($url, ['response' => $response]);
+        $parameters = $this->buildResponse($request);
+
+        if (empty($parameters) === false) {
+            $command = array_shift($parameters);
+            $parameters = array_shift($parameters);
+            $response = $client->get('/' . $command, ['query' => 'params=' . $parameters]);
+
+            $this->log($command, ['response' => $response]);
+        }
 
         return $response;
     }
@@ -60,6 +67,7 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
      */
     private function shouldCallArduino(MessageInterface $message)
     {
+        /* @TODO: Add check for available commands */
         $isEmpty = $message->isEmpty();
         return $message instanceof InputMessage && $isEmpty === false;
     }
@@ -74,6 +82,39 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
             $context['class'] = self::class;
             $this->logger->info($message, $context);
         }
+    }
+
+    private function buildResponse($request)
+    {
+        $parameters = [];
+
+        $availableCommands = [
+            /* @NOTE: Because the keywords are searched in order, the longer version of similar keywords need to go first */
+            'sing a song' => 'play',
+            'play a song' => 'play',
+            'sing' => 'play',
+            'play' => 'play',
+            'song' => 'play',
+            'temperature' => 'temp',
+            'temp' => 'temp',
+            'light' => 'light',
+        ];
+
+        foreach ($availableCommands as $keyword => $subject) {
+            if (strpos($request, $keyword) === 0) {
+                array_push($parameters, $subject);
+                break;
+            }
+        }
+
+        if (empty($parameters) === false) {
+
+            $parameterString = substr($request, strlen($keyword));
+            $parameterString = ltrim($parameterString, ': ');
+            array_push($parameters, $parameterString);
+        }
+
+        return $parameters;
     }
 }
 
