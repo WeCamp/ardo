@@ -3,8 +3,10 @@
 namespace WeCamp\Ardo\Arduino;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use WeCamp\Ardo\Messages\Message;
 use WeCamp\Ardo\Plugin\MessageInterface;
 use WeCamp\Ardo\Plugin\OutputInterface;
 use WeCamp\Ardo\Slack\Messages\InputMessage;
@@ -26,11 +28,22 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
 
     final public function handleMessage(MessageInterface $message)
     {
+        $responseMessage = null;
+
         if ($this->shouldCallArduino($message)) {
             $message = $message->toString();
             $this->log($message);
-            $this->callArduino($this->client, $message);
+            $response = $this->callArduino($this->client, $message);
+
+            if ($response instanceof ResponseInterface) {
+                $message = json_decode($response->getBody());
+                $responseMessage = Message::createFromString($message['return_value']);
+
+            }
+
         }
+
+        return $responseMessage;
     }
 
     /**
@@ -87,6 +100,7 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
     private function buildResponse($request)
     {
         $parameters = [];
+        $keyword = '';
 
         $availableCommands = [
             /* @NOTE: Because the keywords are searched in order, the longer version of similar keywords need to go first */
@@ -98,6 +112,7 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
             'temperature' => 'temp',
             'temp' => 'temp',
             'light' => 'light',
+            'laugh' => 'play',
         ];
 
         foreach ($availableCommands as $keyword => $subject) {
@@ -109,9 +124,13 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
 
         if (empty($parameters) === false) {
 
-            $parameterString = substr($request, strlen($keyword));
-            $parameterString = ltrim($parameterString, ': ');
-            array_push($parameters, $parameterString);
+            if ($keyword === 'laugh') {
+                array_push($parameters, 'g g g g g g');
+            } else {
+                $parameterString = substr($request, strlen($keyword));
+                $parameterString = ltrim($parameterString, ': ');
+                array_push($parameters, $parameterString);
+            }
         }
 
         return $parameters;

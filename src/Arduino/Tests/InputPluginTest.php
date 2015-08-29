@@ -140,15 +140,16 @@ class InputPluginTest extends \PHPUnit_Framework_TestCase
     final public function provideExpectedRequests()
     {
         return [
-            ['play AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
-            ['play: AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
-            ['sing AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
-            ['song AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
-            ['sing a song: AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
-            ['play a song: AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+            ['play AAaAAaAAaa BBbBBbB', 'play', 'AAaAAaAAaa BBbBBbB'],
+            ['play: AAaAAaAAaa BBbBBbB', 'play', 'AAaAAaAAaa BBbBBbB'],
+            ['sing AAaAAaAAaa BBbBBbB', 'play', 'AAaAAaAAaa BBbBBbB'],
+            ['song AAaAAaAAaa BBbBBbB', 'play', 'AAaAAaAAaa BBbBBbB'],
+            ['sing a song: AAaAAaAAaa BBbBBbB', 'play', 'AAaAAaAAaa BBbBBbB'],
+            ['play a song: AAaAAaAAaa BBbBBbB', 'play', 'AAaAAaAAaa BBbBBbB'],
             ['temperature', 'temp', ''],
             ['temp', 'temp', ''],
             ['light', 'light', ''],
+            ['laugh', 'play', 'g g g g g g'],
         ];
     }
 
