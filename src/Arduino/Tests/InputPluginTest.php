@@ -97,14 +97,19 @@ class InputPluginTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::handleMessage
+     *
+     * @dataProvider provideExpectedRequests
+     *
+     * @param string $mockRequest
+     * @param string $mockCommand
+     * @param string $mockParameters
      */
-    final function testPluginShouldPassMessageToArduinoWhenGivenSlackMessage()
-    {
+    final function testPluginShouldPassMessageToArduinoWhenGivenSlackMessage(
+        $mockRequest,
+        $mockCommand,
+        $mockParameters
+    ) {
         $plugin = $this->plugin;
-
-        $mockCommand = 'mockCommand';
-        $mockParameters = 'AAaAAaAAaa VBBbBBbB';
-        $expected = sprintf('%s %s', $mockCommand, $mockParameters);
 
         $mockClient = $this->mockClient;
 
@@ -116,7 +121,7 @@ class InputPluginTest extends \PHPUnit_Framework_TestCase
 
         $mockMessage->expects($this->exactly(1))
             ->method('toString')
-            ->willReturn($expected)
+            ->willReturn($mockRequest)
         ;
 
         $mockMessage->expects($this->exactly(1))
@@ -131,6 +136,14 @@ class InputPluginTest extends \PHPUnit_Framework_TestCase
 
         $plugin->handleMessage($mockMessage);
     }
+
+    final public function provideExpectedRequests()
+    {
+        return [
+            ['play AAaAAaAAaa VBBbBBbB', 'play', 'AAaAAaAAaa VBBbBBbB'],
+        ];
+    }
+
 }
 
 /*EOF*/
