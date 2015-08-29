@@ -37,7 +37,7 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
 
             if ($response instanceof ResponseInterface) {
                 $message = json_decode($response->getBody());
-                $responseMessage = Message::createFromString($message['return_value']);
+                $responseMessage = Message::createFromString((string) $message->return_value);
 
             }
 
@@ -101,6 +101,8 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
     {
         $parameters = [];
         $keyword = '';
+
+        $request = trim($request);
 
         $availableCommands = [
             /* @NOTE: Because the keywords are searched in order, the longer version of similar keywords need to go first */
