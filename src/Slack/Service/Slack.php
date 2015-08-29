@@ -40,6 +40,7 @@ class Slack implements SlackInterface
                 'channel'  => $this->channel,
                 'text'     => $message->toString(),
                 'username' => 'ardo',
+                'icon_url' => 'https://raw.githubusercontent.com/WeCamp/ardo/master/ardo-head.png'
             ]
         );
     }
