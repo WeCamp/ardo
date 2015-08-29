@@ -28,7 +28,7 @@ class Output implements OutputInterface
     public function handleMessage(MessageInterface $message)
     {
         if ($message->isEmpty() === false) {
-            $this->slack->sendMessage(Message::createFromString('Repling to: ' . $message->toString()));
+            $this->slack->sendMessage(Message::createFromString('Repyling to: ' . $message->toString()));
         }
     }
 }
