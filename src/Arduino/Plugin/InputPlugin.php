@@ -9,6 +9,9 @@ use WeCamp\Ardo\Plugin\MessageInterface;
 use WeCamp\Ardo\Plugin\OutputInterface;
 use WeCamp\Ardo\Slack\Messages\InputMessage;
 
+/**
+ * Plugin to send messages to the Arduino
+ */
 class InputPlugin implements OutputInterface, LoggerAwareInterface
 {
     /** @var Client */
@@ -24,8 +27,9 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
     final public function handleMessage(MessageInterface $message)
     {
         if ($this->shouldCallArduino($message)) {
-            $this->logger->info($message->toString(), ['class' => self::class]);
-            $this->callArduino($this->client, $message->toString());
+            $message = $message->toString();
+            $this->log($message);
+            $this->callArduino($this->client, $message);
         }
     }
 
@@ -45,7 +49,7 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
         list($url, $parameter) = explode(' ', trim($message), 2);
         $response = $client->get('/' . $url, ['query' => 'params=' . $parameter]);
 
-        $this->logger->info($url, ['class' => self::class, 'response' => $response]);
+        $this->log($url, ['response' => $response]);
 
         return $response;
     }
@@ -59,5 +63,18 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
         $isEmpty = $message->isEmpty();
         return $message instanceof InputMessage && $isEmpty === false;
     }
+
+    /**
+     * @param $message
+     * @param $context
+     */
+    private function log($message, $context = [])
+    {
+        if ($this->logger instanceof LoggerInterface) {
+            $context['class'] = self::class;
+            $this->logger->info($message, $context);
+        }
+    }
 }
+
 /*EOF*/

@@ -125,8 +125,8 @@ class InputPluginTest extends \PHPUnit_Framework_TestCase
         ;
 
         $mockClient->expects($this->exactly(1))
-            ->method('request')
-            ->with('get', $mockCommand, ['params' => $mockParameters])
+            ->method('__call')
+            ->with('get', ['/'.$mockCommand, ['query' => 'params='.$mockParameters]])
         ;
 
         $plugin->handleMessage($mockMessage);
