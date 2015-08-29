@@ -38,7 +38,6 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
             if ($response instanceof ResponseInterface) {
                 $message = json_decode($response->getBody());
                 $responseMessage = Message::createFromString((string) $message->return_value);
-
             }
 
         }
@@ -69,6 +68,10 @@ class InputPlugin implements OutputInterface, LoggerAwareInterface
             $response = $client->get('/' . $command, ['query' => 'params=' . $parameters]);
 
             $this->log($command, ['response' => $response]);
+
+            if ($command === 'play') {
+                $response = null;
+            }
         }
 
         return $response;
